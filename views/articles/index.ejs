@@ -1,9 +1,9 @@
 <h1>ARTICLES INDEX</h1>
 
 <% articles.forEach(a => { %>
-  <div>
+  <a href="/articles/<%= a.id %>">
     <h4><%= a.title %></h4>
     <h3><%= a.author %></h3>
     <p><%= a.content.slice(0,100) %>...</p>
-  </div>
+  </a>
 <% }) %>

@@ -40,7 +40,7 @@ app.get('/contact', (req, res) => {
 // Show list of articles
 app.get('/articles', (req, res) => {
   db.article.findAll({
-    attributes: ['title', 'author', 'content'],
+    attributes: ['id', 'title', 'author', 'content'],
   })
   .then(foundArticles => {
     res.render('articles/index', { articles: foundArticles.slice(0,25) } );
@@ -62,13 +62,19 @@ app.post('/articles', (req, res) => {
 });
 
 // Show individual article
-app.get('/articles:id', (req, res) => {
-  res.render('articles/show');
+app.get('/articles/:idx', (req, res) => {
+  db.article.find({
+    attributes: ['title', 'author', 'content'],
+    where: {id: req.params.idx},
+  })
+  .then(foundArticle => {
+    res.render('articles/show', { article: foundArticle });
+  })
+  .catch(err => {
+    console.log(err);
+    // DO SOMETHING HERE
+  });
 });
-
-
-// Renders results page
-// app.post('/', getWeatherData);
 
 
 // Listen on PORT 3000
