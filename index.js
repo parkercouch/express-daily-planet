@@ -3,6 +3,9 @@ const express = require('express');
 const layouts = require('express-ejs-layouts');
 const parser = require('body-parser');
 
+// DATABASE
+const db = require("./models");
+
 // CONSTANTS
 const PORT = 3000;
 const app = express();
@@ -36,7 +39,16 @@ app.get('/contact', (req, res) => {
 // ARTICLES ROUTES //
 // Show list of articles
 app.get('/articles', (req, res) => {
-  res.render('articles/index');
+  db.article.findAll({
+    attributes: ['title', 'author', 'content'],
+  })
+  .then(foundArticles => {
+    res.render('articles/index', { articles: foundArticles.slice(0,25) } );
+  })
+  .catch(err => {
+    console.log(`Error: ${err}`);
+    // ADD SOMETHING HERE
+  });
 });
 
 // Show form to add new article
